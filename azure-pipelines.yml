@@ -34,8 +34,7 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - script: |
-   wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
-   chmod +x codeql-runner-linux
+   curl https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
    displayName: 'Get latest CodeQL package. Install on Agent.'
 
 - script: |

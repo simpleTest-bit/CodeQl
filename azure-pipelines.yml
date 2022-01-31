@@ -1,0 +1,47 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- script: |
+   wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
+   chmod +x codeql-runner-linux
+   displayName: 'Get latest CodeQL package. Install on Agent.'
+
+- script: |
+   ./codeql-runner-linux init --repository simpleTest-bit/CodeQl --github-url https://github.com --github-auth $(GithubToken)
+   displayName: 'Initialize CodeQL Executable and create a CodeQL database'
+
+- script: |
+   ./codeql-runner-linux analyze --repository simpleTest-bit/CodeQl --github-url https://github.com --github-auth $(GithubToken) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+   displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'

@@ -33,10 +33,9 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: |
-   Write-Host "downloading Code QL analysis for windows" \
+- powershell : |
    $ProgressPreference = 'SilentlyContinue' \
-   Invoke-WebRequest -uri https://github.com/github/codeql-action/releases/latest/download/codeql-runner-win.exe -OutFile $(Build.SourcesDirectory)\src\codeql-runner-win.exe \
+   Invoke-WebRequest: -uri https://github.com/github/codeql-action/releases/latest/download/codeql-runner-win.exe -OutFile $(Build.SourcesDirectory)\src\codeql-runner-win.exe \
    Write-Host "Code QL analysis for windows downloaded, now we init it" \
    cd $(Build.SourcesDirectory)\src \
    pwd \

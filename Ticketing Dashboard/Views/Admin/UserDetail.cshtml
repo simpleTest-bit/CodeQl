@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "User Detail";
+}
+<head>
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans&display=swap" rel="stylesheet">
+<body>
+    <div class="alert alert-@ViewBag.DetailMessageType" role="alert">
+        @ViewBag.DetailMessage
+        <div class="float-end">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="container-fluid px-4 py-4">
+        <div class="card mb-3">
+            <div class="card-body">
+                <form action="/Admin/UpdateUser" method="post" id="updateForm">
+                    @Html.AntiForgeryToken()
+                    <legend>User Details</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">User ID</label>
+                            <input type="number" class="form-control" value="@ViewBag.requestObject.loginPk" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">User Name</label>
+                            <input type="text" class="form-control checkElement" name="username" value="@ViewBag.requestObject.username" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Old Password</label>
+                            <input type="password" id="oldPassword" class="form-control checkElement" name="oldPassword" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">New Password</label>
+                            <input type="password" id="newPassword" class="form-control checkElement" name="newPassword" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" class="form-control checkElement" name="confirmNewPassword" />
+                            <span class="text-danger text-sm-start confirmPassMsg">New password and confirm password are not equal</span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">User Role</label>
+                            <select class="form-control checkElement" name="loginRole">
+                                @if (ViewBag.requestObject.loginRole == "admin")
+                                {
+                                    <option selected>Super Admin</option>
+                                    <option>SR Admin</option>
+                                    <option>Laptop Admin</option>
+                                }
+                                else if (ViewBag.requestObject.loginRole == "sradmin")
+                                {
+                                    <option>Super Admin</option>
+                                    <option selected>SR Admin</option>
+                                    <option>Laptop Admin</option>
+                                }
+                                else if (ViewBag.requestObject.loginRole == "laptopadmin")
+                                {
+                                    <option>Super Admin</option>
+                                    <option>SR Admin</option>
+                                    <option selected>Laptop Admin</option>
+                                }
+                            </select>
+                        </div>
+                        <br />
+                        <div class="col-md-4">
+                            <label class="form-label">Created Date</label>
+                            <input type="text" class="form-control checkElement" name="createdDate" disabled value="@ViewBag.requestObject.createdDate.ToString("MM/dd/yyyy")" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Status</label>
+                            <select class="form-control checkElement" name="loginStatus">
+                                @if (ViewBag.requestObject.loginStatus == "active")
+                                {
+                                    <option selected value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                }
+                                else if (ViewBag.requestObject.loginStatus == "disabled")
+                                {
+                                    <option value="active">Active</option>
+                                    <option selected value="inactive">Inactive</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bottom-bar w-100 d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary" onclick="javascript: window.history.back();" type="button">Back</button>
+            <button class="btn btn-success justify-content-md-end" type="submit" form="updateForm" id="updateBtn">Update</button>
+        </div>
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script>
+            $("#updateBtn").hide();
+            $('#closeModal').on('shown.bs.modal', function () {
+                $('#submitBtn').focus();
+            })
+            $('.checkElement').each(function () {
+                var elem = $(this);
+
+                // Save current value of element
+                elem.data('oldVal', elem.val());
+
+                // Look for changes in the value
+                elem.bind("propertychange change click keyup input paste", function (event) {
+                    // If value has changed...
+                    if (elem.data('oldVal') != elem.val()) {
+
+                        // Do action
+                        $("#updateBtn").show();
+                        if (this.getAttribute("name") == "oldPassword") {
+                            $("#newPassword").prop('required', true);
+                            $("#confirmNewPassword").prop('required', true);
+                        }
+                        else if (this.getAttribute("name") == "newPassword") {
+                            $("#oldPassword").prop('required', true);
+                            $("#confirmNewPassword").prop('required', true);
+                        }
+                        else if (this.getAttribute("name") == "confirmNewPassword") {
+                            $("#newPassword").prop('required', true);
+                            $("#oldPassword").prop('required', true);
+                        }
+
+                    }
+                    else {
+                        $("#updateBtn").hide();
+                    }
+                });
+            });
+        </script>
+        <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+</body>

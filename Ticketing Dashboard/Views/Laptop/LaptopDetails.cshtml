@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Laptop Request Details";
+}
+<link rel="stylesheet" type="text/css" href="/Content/datatables.css">
+<link rel="stylesheet" type="text/css" href="~/Content/SRDetails.css">
+<div class="container-fluid px-5 py-5">
+    <div class="card mb-3">
+        <div class="card-body overflow-scroll">
+            <fieldset class="scheduler-border">
+                @if (Convert.ToString(ViewBag.requestType) == "all")
+                {
+                    <legend>All Laptop Request Details</legend>
+                }
+                else if (Convert.ToString(ViewBag.requestType) == "pending")
+                {
+                    <legend>Pending Laptop Request Details</legend>
+                }
+                else if (Convert.ToString(ViewBag.requestType) == "sla-breakfix")
+                {
+                    <legend>Pending (Break Fix) SLA Exceed Laptop Request Details</legend>
+                }
+                else if (Convert.ToString(ViewBag.requestType) == "sla-employeemovingonshore")
+                {
+                    <legend>Pending (Moving Onshore/Offshore) SLA Exceed Laptop Request Details</legend>
+                }
+                else if (Convert.ToString(ViewBag.requestType) == "closed")
+                {
+                    <legend>Closed Laptop Request Details</legend>
+                }
+                else
+                {
+                    <legend>Laptop Request Details</legend>
+                }
+                <br />
+                @if (ViewBag.requestType == "all")
+                {
+                    <form method="get" action="/Laptop/LaptopDetails">
+                        <input type="hidden" name="type" value="all" />
+                        <div class="row g-3 text-wrap">
+                            <div class="col-md-3">
+                                <label class="form-label">From Created Date</label>
+                                <input class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" name="fromDate" value="@ViewBag.fromDate.ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">To Created Date</label>
+                                <input class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" name="ToDate" value="@ViewBag.toDate.ToString("yyyy-MM-dd")" required />
+                            </div>
+                        </div>
+                        <div class="col-md-3 py-3">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                }
+                <br />
+                <table class="table table-striped overflow-scroll" id="data-table">
+                    <thead>
+                        <tr>
+                            <td><strong>#</strong></td>
+                            <td><strong>Request ID</strong></td>
+                            <td><strong>Name</strong></td>
+                            <td><strong>SAP ID</strong></td>
+                            <td><strong>Email ID</strong></td>
+                            <td><strong>Request Type</strong></td>
+                            <td><strong>Created Date</strong></td>
+                            <td><strong>Status</strong></td>
+                            <td><strong>Action</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;
+                            foreach (var item in ViewBag.requestDetails)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.srPk</td>
+                                    @if (item.name == null)
+                                    {
+                                        <td>NA</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.name</td>
+                                    }
+                                    @if (item.sapid == null)
+                                    {
+                                        <td>NA</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.sapid</td>
+                                    }
+                                    @if (item.requesterEmailID == null)
+                                    {
+                                        <td>NA</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.requesterEmailID</td>
+                                    }
+                                    @if (item.requestType == null)
+                                    {
+                                        <td>NA</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.requestType</td>
+                                    }
+                                    <td>@item.createdDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.status</td>
+                                    <td><a href="/Laptop/LaptopDetail/@item.srPk">View</a></td>
+                                </tr>
+                                i = i + 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <button class="btn btn-primary" onclick="javascript: window.history.back();" type="button">Back</button>
+            <button class="btn btn-success" id="export-button">Export</button>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script>
+    function sendExcelRequest() {
+        const params = new URLSearchParams(window.location.search);
+        const type = params.get('type');
+        var url = "https://msftpmoservicexchange.azurewebsites.net/Laptop/ExportExcel?type=" + type;
+        window.location.href = url;
+
+    };
+    document.getElementById("export-button").addEventListener("click", sendExcelRequest, false);
+
+</script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/datatables.js"></script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/SRDetails.js"></script>

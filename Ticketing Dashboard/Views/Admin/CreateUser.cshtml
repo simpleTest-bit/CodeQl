@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Create User";
+}
+
+<div class="alert alert-@TempData["CreateUserMessageType"]" role="alert">
+    @TempData["CreateUserMessage"]
+    <div class="float-end">
+        <button type="button" class="btn-close mt-0" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="~/Content/AdminLogin.css">
+<div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+    <div class="card card0 border-0 main-div">
+        <div class="row d-flex">
+            <div class="col-lg-6" style="background-size: cover; background-repeat: no-repeat ; background-image: url('https://img.etimg.com/thumb/msid-77403738,width-1200,height-900,imgsize-254839,resizemode-8,quality-100/hcl.jpg')">
+            </div>
+            <div class="col-lg-6 logincustom">
+                <div class="card2 card border-0 px-4 py-4">
+                    <form action="/Admin/CreateUser" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row px-3 pb-3">
+                            <h3>Create User</h3>
+                        </div>
+                        <div class="row px-3">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">User Name</h6>
+                            </label>
+                            <input class="mb-4" type="text" name="username" placeholder="Enter username" required>
+                        </div>
+                        <div class="row px-3">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">Email ID</h6>
+                            </label>
+                            <input class="mb-4" type="email" name="emailID" placeholder="Enter valid email ID" required>
+                        </div>
+                        <div class="row px-3">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">Password</h6>
+                            </label>
+                            <input type="password" name="loginPassword" placeholder="Enter password" required>
+                        </div>
+                        <div class="row px-3 pt-3">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">Login Role</h6>
+                            </label>
+                            <select class="mb-0 text-sm" name="loginRole" required>
+                                <option selected value="" hidden disabled>Select an option..</option>
+                                <option value="admin">Super Admin</option>
+                                <option value="sradmin">SR Admin</option>
+                                <option value="laptopadmin">Laptop Admin</option>
+                                <option value="onboardingadmin">Onboarding Admin</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <button type="submit" class="btn btn-blue text-center">Create User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>

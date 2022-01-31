@@ -1,0 +1,554 @@
+﻿@{
+    ViewBag.Title = "SR Request Detail";
+}
+<head>
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans&display=swap" rel="stylesheet">
+<body>
+    <div class="alert alert-@ViewBag.DetailMessageType" role="alert">
+        @ViewBag.DetailMessage
+        <div class="float-end">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                    <h5 class="modal-title" id="exampleModalToggleLabel">Close SR Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Home/CloseSRRequest" method="post" id="closeForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" value="@ViewBag.requestObject.srPk" name="id">
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">Remarks</label>
+                            <input type="text" class="form-control" name="remarks" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">SR No.</label>
+                            <input type="text" class="form-control" name="srno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">Ticket Closing Date</label>
+                            <input type="date" id="txtDate" onkeypress="javascript: return false;" min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" name="closingDate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" form="closeForm">Close Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Confirm Close SR Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to close this SR Request ?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">No</button>
+                    <button class="btn btn-success" type="submit" form="closeForm">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid px-5 py-5">
+        <div class="card mb-3">
+            <div class="card-body">
+                <legend>SR Request Details</legend>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Created Date
+                        </span>
+                        @if (ViewBag.requestObject.createdDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.createdDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Status
+                        </span>
+                        @if (ViewBag.requestObject.status == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.status</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Requisition Source
+                        </span>
+                        @if (ViewBag.requestObject.requisitionSource == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.requisitionSource</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Request ID
+                        </span>
+                        @if (ViewBag.requestObject.srPk == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.srPk</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Resource Name
+                        </span>
+                        @if (ViewBag.requestObject.name == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.name</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Resource SAP ID
+                        </span>
+                        @if (ViewBag.requestObject.sapid == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.sapid</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Experience
+                        </span>
+                        @if (ViewBag.requestObject.experience == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.experience</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Reporting Manager SAP ID
+                        </span>
+                        @if (ViewBag.requestObject.RMSapid == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.RMSapid</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Project Name
+                        </span>
+                        @if (ViewBag.requestObject.projectName == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.projectName</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Band
+                        </span>
+                        @if (ViewBag.requestObject.band == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.band</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Role
+                        </span>
+                        @if (ViewBag.requestObject.role == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.role</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Designation
+                        </span>
+                        @if (ViewBag.requestObject.designation == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.designation</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Position Type
+                        </span>
+                        @if (ViewBag.requestObject.positionType == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.positionType</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Number Of Positions
+                        </span>
+                        @if (ViewBag.requestObject.noOfPosition == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.noOfPosition</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Location
+                        </span>
+                        @if (ViewBag.requestObject.location == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.location</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Bill Start Date
+                        </span>
+                        @if (ViewBag.requestObject.billStartDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.billStartDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Billing Loss Start Date
+                        </span>
+                        @if (ViewBag.requestObject.billingLossStartDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.billingLossStartDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Buy Rate
+                        </span>
+                        @if (ViewBag.requestObject.buyRate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.buyRate</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Sell Rate
+                        </span>
+                        @if (ViewBag.requestObject.sellRate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.sellRate</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Onboarding Date
+                        </span>
+                        @if (ViewBag.requestObject.onboardingDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.onboardingDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Interviewer 1 SAP ID
+                        </span>
+                        @if (ViewBag.requestObject.interviewerSapid1 == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.interviewerSapid1</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Interviewer 2 SAP ID
+                        </span>
+                        @if (ViewBag.requestObject.interviewerSapid2 == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.interviewerSapid2</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Requester Email ID
+                        </span>
+                        @if (ViewBag.requestObject.requesterEmailID == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.requesterEmailID</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Is Contract
+                        </span>
+                        @if (ViewBag.requestObject.isContract == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.isContract</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Contract From Date
+                        </span>
+                        @if (ViewBag.requestObject.contractFromDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.contractFromDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Contract To Date
+                        </span>
+                        @if (ViewBag.requestObject.contratToDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.contratToDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Contract Type
+                        </span>
+                        @if (ViewBag.requestObject.contractType == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.contractType</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Skill set
+                        </span>
+                        @if (ViewBag.requestObject.skillSet == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.skillSet</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Primary Skills
+                        </span>
+                        @if (ViewBag.requestObject.primarySkill == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.primarySkill</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Secondary Skills
+                        </span>
+                        @if (ViewBag.requestObject.secondarySkill == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.secondarySkill</p>
+                        }
+                    </div>
+                </div>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            RPF Updated
+                        </span>
+                        @if (ViewBag.requestObject.RPFUpdated == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.RPFUpdated</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Remarks
+                        </span>
+                        @if (ViewBag.requestObject.remarks == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.remarks</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            SR No.
+                        </span>
+                        @if (ViewBag.requestObject.srNo == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.srNo</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Ticket Closing Date
+                        </span>
+                        @if (ViewBag.requestObject.closingDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.closingDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-bar w-100 d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary" onclick="javascript: window.history.back();" type="button">Back</button>
+            @if (ViewBag.requestObject.status == "Closed")
+            {
+                <button class="btn btn-danger justify-content-md-end" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" hidden>Close Request</button>
+            }
+            else
+            {
+                <button class="btn btn-danger justify-content-md-end" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">Close Request</button>
+            }
+        </div>
+        <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+        <script>
+            $('#closeModal').on('shown.bs.modal', function () {
+                $('#submitBtn').focus();
+            })
+        </script>
+        <script src="~/Scripts/Popper.js"></script>
+</body>

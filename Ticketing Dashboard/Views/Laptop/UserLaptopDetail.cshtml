@@ -1,0 +1,249 @@
+﻿@{
+    ViewBag.Title = "Laptop Request Detail";
+}
+<head>
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans&display=swap" rel="stylesheet">
+<body>
+    <div class="alert alert-@ViewBag.DetailMessageType" role="alert">
+        @ViewBag.DetailMessage
+        <div class="float-end">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="container-fluid px-5 py-5">
+        <div class="card mb-3">
+            <div class="card-body">
+                <legend>Laptop Request Details</legend>
+                <br />
+                <br />
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Created Date
+                        </span>
+                        @if (ViewBag.requestObject.createdDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.createdDate.ToString("dd MMM yyyy")</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Status
+                        </span>
+                        @if (ViewBag.requestObject.status == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.status</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Request Type
+                        </span>
+                        @if (ViewBag.requestObject.requestType == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.requestType</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Request ID
+                        </span>
+                        @if (ViewBag.requestObject.srPk == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.srPk</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Resource Name
+                        </span>
+                        @if (ViewBag.requestObject.name == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.name</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Resource SAP ID
+                        </span>
+                        @if (ViewBag.requestObject.sapid == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.sapid</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Email ID
+                        </span>
+                        @if (ViewBag.requestObject.requesterEmailID == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.requesterEmailID</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    @if (ViewBag.requestObject.requestType == "Break Fix")
+                    {
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Issue Details
+                            </span>
+                            @if (ViewBag.requestObject.issueDetails == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.issueDetails</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Location
+                            </span>
+                            @if (ViewBag.requestObject.requesterLocation == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.requesterLocation</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Type
+                            </span>
+                            @if (ViewBag.requestObject.replacementType == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.replacementType</p>
+                            }
+                        </div>
+                    }
+                    else if (ViewBag.requestObject.requestType == "Moving To Onshore / Offshore")
+                    {
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Date Of Travel
+                            </span>
+                            @if (ViewBag.requestObject.dateOfTravel == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@Convert.ToDateTime(ViewBag.requestObject.dateOfTravel, ViewBag.cult).ToString("dd/MM/yyyy")</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                From Location
+                            </span>
+                            @if (ViewBag.requestObject.fromLocation == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.fromLocation</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                To Location
+                            </span>
+                            @if (ViewBag.requestObject.toLocation == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.toLocation</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Laptop Type
+                            </span>
+                            @if (ViewBag.requestObject.laptopType == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.laptopType</p>
+                            }
+                        </div>
+
+                    }
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Action Taken
+                        </span>
+                        @if (ViewBag.requestObject.actionTaken == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.actionTaken</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Date Of Closing
+                        </span>
+                        @if (ViewBag.requestObject.dateOfClosing == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@Convert.ToDateTime(ViewBag.requestObject.dateOfClosing, ViewBag.cult).ToString("dd/MM/yyyy")</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/Popper.js"></script>
+    <script src="~/Scripts/srdetail-bootstrap.js"></script>
+</body>

@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Onboarding Details";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css">
+<link rel="stylesheet" type="text/css" href="~/Content/SRDetails.css">
+<div class="container-fluid px-5 py-5">
+    <div class="card mb-3">
+        <div class="card-body overflow-scroll">
+            <fieldset class="scheduler-border">
+                @if (ViewBag.requestType == "all")
+                {
+                    <legend>Onboarding Requests</legend>
+                }
+                else if (ViewBag.requestType == "upcoming")
+                {
+                    <legend>Upcoming (Joining in 7 days)</legend>
+                }
+                else if (ViewBag.requestType == "closed")
+                {
+                    <legend>Fulfilled Requests</legend>
+                }
+                else if (ViewBag.requestType == "RENEGE")
+                {
+                    <legend>RENEGE Requests</legend>
+                }
+                <br />
+                @if (ViewBag.requestType == "all")
+                {
+                    <form method="get" action="/Onboarding/OnboardingDetails">
+                        <input type="hidden" name="type" value="all" />
+                        <div class="row g-3 text-wrap">
+                            <div class="col-md-3">
+                                <label class="form-label">From Date</label>
+                                <input class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" name="fromDate" value="@ViewBag.fromDate.ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">To Date</label>
+                                <input class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" name="ToDate" value="@ViewBag.toDate.ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Filter By</label>
+                                <select class="form-select" name="filterBy" required>
+                                    @if (ViewBag.filterBy == "createdDate")
+                                    {
+                                        <option value="" disabled hidden>Select an option..</option>
+                                        <option value="createdDate" selected>Created Date</option>
+                                        <option value="joiningDate">Joining Date</option>
+                                    }
+                                    else if (ViewBag.filterBy == "joiningDate")
+                                    {
+                                        <option value="" disabled hidden>Select an option..</option>
+                                        <option value="createdDate">Created Date</option>
+                                        <option value="joiningDate" selected>Joining Date</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="" selected disabled hidden>Select an option..</option>
+                                        <option value="createdDate">Created Date</option>
+                                        <option value="joiningDate">Joining Date</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 py-3">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                }
+                <br />
+                <table class="table table-striped overflow-scroll" id="data-table">
+                    <thead>
+                        <tr>
+                            <td><strong>#</strong></td>
+                            <td><strong>Request ID</strong></td>
+                            <td><strong>First Name</strong></td>
+                            <td><strong>Last Name</strong></td>
+                            <td><strong>Email ID</strong></td>
+                            <td><strong>Contact Number</strong></td>
+                            <td><strong>Band</strong></td>
+                            <td><strong>Action</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;
+                            foreach (var item in ViewBag.onboarding)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.pkID</td>
+                                    <td>@item.firstName</td>
+                                    <td>@item.lastName</td>
+                                    <td>@item.emailID</td>
+                                    <td>@item.contactNumber</td>
+                                    <td>@item.band</td>
+                                    <td><a href="/Onboarding/OnboardingDetail/@item.pkID">View</a></td>
+                                </tr>
+                                i = i + 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <button class="btn btn-primary" onclick="javascript: window.history.back();">Back</button>
+            <button class="btn btn-success" id="export-button">Export</button>
+        </div>
+    </div>
+</div>
+<script>
+    function sendExcelRequest() {
+        const params = new URLSearchParams(window.location.search);
+        const type = params.get('type');
+        var url = "https://ticketingdashboard20211129024609.azurewebsites.net/Onboarding/ExportExcel?type=" + type;
+        window.location.href = url;
+
+    };
+    document.getElementById("export-button").addEventListener("click", sendExcelRequest, false);
+
+</script>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/datatables.js"></script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/SRDetails.js"></script>

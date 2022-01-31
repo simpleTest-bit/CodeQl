@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+<link rel="stylesheet" href="~/Content/Index.css" />
+<div class="container-fluid px-3 py-3">
+    <div class="card mb-3">
+        <div class="card-body px-3 py-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <legend class="text-sm">Select Type Of Request</legend>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/Home/SR_Request" style="text-decoration: none;">
+                        <div class="card h-100 card-blue">
+                            <h4>
+                                SR Request
+                                <span class="float-end">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                </span>
+                            </h4>
+                            <img class="img-fluid img-small" src="~/Content/Images/image1.svg" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <a href="/Laptop/LaptopRequest" style="text-decoration: none;">
+                    <div class="card h-100 card-orange">
+                        <h4>
+                            Laptop Request
+                            <span class="float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </span>
+                        </h4>
+                        <img class="img-fluid" src="~/Content/Images/image3.svg" />
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="#" style="text-decoration: none;">
+                    <div class="card h-100 card-red" style="background-color: lightgrey;">
+                        <h4>
+                            RAS Assignation <br /><font style="font-size: 15px; color: red;">Coming Soon</font>
+                            <span class="float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </span>
+                        </h4>
+                        <img class="img-fluid img-small" src="~/Content/Images/image2.svg" />
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/Onboarding/UploadOnboardingData" style="text-decoration: none;">
+                    <div class="card h-100 card-red">
+                        <h4>
+                            Onboarding 
+                            <span class="float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </span>
+                        </h4>
+                        <img class="img-fluid img-small" src="~/Content/Images/onboarding.svg" />
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>

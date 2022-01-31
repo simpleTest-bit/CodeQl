@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "Mail Manager";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css">
+<link rel="stylesheet" type="text/css" href="~/Content/SRDetails.css">
+
+<div class="alert alert-@TempData["CreateUserMessageType"]" role="alert">
+    @TempData["CreateUserMessage"]
+    <div class="float-end">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<div class="container-fluid px-5 py-5">
+    <div class="card mb-3">
+        <div class="card-body overflow-scroll">
+
+            <!-- Add Mail Modal -->
+            <div class="modal fade" id="AddMailModal" aria-hidden="true" aria-labelledby="AddMailModalLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                            <h5 class="modal-title" id="AddMailModalLabel">Add Mail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/Admin/AddMail" method="post" id="addMail">
+                                @Html.AntiForgeryToken()
+                                <div class="mb-3">
+                                    <label class="text-secondary custom-label">Email ID</label>
+                                    <input type="text" class="form-control" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-secondary custom-label">Privilege</label>
+                                    <select class="form-select" name="type" required>
+                                        <option value="" selected hidden disabled>Select an option...</option>
+                                        <option value="SLRO">Super Admin</option>
+                                        <option value="S">SR Admin</option>
+                                        <option value="L">Laptop Admin</option>
+                                        <option value="R">RAS Admin</option>
+                                        <option value="O">Onboarding Admin</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" form="addMail">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Starts Here -->
+            <fieldset class="scheduler-border">
+                <legend>All Mail Details</legend>
+                <br />
+                <br />
+                <table class="table table-striped overflow-scroll" id="data-table">
+                    <thead>
+                        <tr>
+                            <td><strong>#</strong></td>
+                            <td><strong>ID</strong></td>
+                            <td><strong>Email ID</strong></td>
+                            <td><strong>Privilege</strong></td>
+                            <td><strong>Action</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;
+                            foreach (var item in ViewBag.users)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.id</td>
+                                    <td>@item.email</td>
+                                    @if (item.type == "SLRO")
+                                    {
+                                        <td>Super Admin</td>
+                                    }
+                                    else if (item.type == "S")
+                                    {
+                                        <td>SR Admin</td>
+                                    }
+                                    else if (item.type == "L")
+                                    {
+                                        <td>Laptop Admin</td>
+                                    }
+                                    else if (item.type == "R")
+                                    {
+                                        <td>RAS Admin</td>
+                                    }
+                                    else if (item.type == "O")
+                                    {
+                                        <td>Onboarding Admin</td>
+                                    }
+                                    <td><a href="/Admin/DeleteMail/@item.id">Delete</a></td>
+                                </tr>
+                                i = i + 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+
+
+            <button class="btn btn-primary" onclick="javascript: window.history.back();">Back</button>
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#AddMailModal">Add Mail ID</button>
+
+        </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script>
+
+</script>

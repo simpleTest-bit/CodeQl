@@ -1,0 +1,819 @@
+﻿@{
+    ViewBag.Title = "Onboarding Detail";
+}
+<head>
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans&display=swap" rel="stylesheet">
+<link href="~/Content/bootstrap-steps.min.css" rel="stylesheet"/>
+<style>
+    .error-msg {
+        font-size: small;
+        color: red;
+    }
+</style>
+<body>
+    <div class="alert alert-@TempData["MessageType"]" role="alert">
+        @TempData["Message"]
+        <div class="float-end">
+            <button type="button" class="btn-close mt-0" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                    <h5 class="modal-title" id="exampleModalToggleLabel">Close Onboarding Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Home/CloseSRRequest" method="post" id="closeForm">
+                        <input type="hidden" value="@ViewBag.requestObject.pkID" name="id">
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">Remarks</label>
+                            <input type="text" class="form-control" name="remarks" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">SR No.</label>
+                            <input type="text" class="form-control" name="srno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">Closing Date</label>
+                            <input type="date" id="txtDate" onkeypress="javascript: return false;" min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" name="closingDate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" form="closeForm">Close Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="setRENEGEStatusToggle" aria-hidden="true" aria-labelledby="setRENEGEStatusToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                    <h5 class="modal-title" id="setRENEGEStatusToggleLabel">Set RENEGE Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Onboarding/SetRENEGEStatus" method="post" id="RENEGEform">
+                        <input type="hidden" value="@ViewBag.requestObject.pkID" name="id">
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">RENEGE Updated Date</label>
+                            <input type="date" class="form-control" name="RENEGEUpdatedDate" required min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-secondary custom-label">RENEGE Remarks</label>
+                            <textarea type="text" class="form-control" name="RENEGERemarks" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" form="RENEGEform">Set RENEGE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateStatus" aria-hidden="true" aria-labelledby="updateStatusLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                    @if (ViewBag.requestObject.status == 4)
+                    {
+                        <h5 class="modal-title" id="updateStatusLabel">Update Laptop Request Status</h5>
+                    }
+                    @if (ViewBag.requestObject.status == 6)
+                    {
+                        <h5 class="modal-title" id="updateStatusLabel">Update SAP Code Status</h5>
+                    }
+                    @if (ViewBag.requestObject.status == 8)
+                    {
+                        <h5 class="modal-title" id="updateStatusLabel">Update GIT Status</h5>
+                    }
+                    @if (ViewBag.requestObject.status == 10)
+                    {
+                        <h5 class="modal-title" id="updateStatusLabel">Update Laptop Dispatch Status</h5>
+                    }
+                    @if (ViewBag.requestObject.status == 12)
+                    {
+                        <h5 class="modal-title" id="updateStatusLabel">Update Laptop Collection Status</h5>
+                    }
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/Onboarding/UpdateStatus" method="post" id="updateForm">
+                        <input type="hidden" value="@ViewBag.requestObject.pkID" name="id">
+                        @if (ViewBag.requestObject.status == 4)
+                        {
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">Order ID</label>
+                                <input type="number" class="form-control" name="orderID" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">Laptop Request Updated Date</label>
+                                <input type="date" class="form-control" name="laptopRequestUpdatedDate" required min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">Remarks</label>
+                                <textarea type="text" class="form-control" name="laptopRequestUpdateRemarks" required></textarea>
+                            </div>
+                        }
+                        else if (ViewBag.requestObject.status == 6)
+                        {
+                            <div class="mb-3 sapID1">
+                                <label class="text-secondary custom-label">SAP ID</label>
+                                <input type="number" class="form-control sapID1" name="sapID" required min="00000000" max="99999999">
+                                <div class="sapid-error-msg1"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">SAP ID Updated Date</label>
+                                <input type="date" class="form-control" name="sapIDUpdatedDate" required min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">Remarks</label>
+                                <textarea type="text" class="form-control" name="sapIDRemarks" required></textarea>
+                            </div>
+                        }
+                        else if (ViewBag.requestObject.status == 8)
+                        {
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">GIT Updated Date</label>
+                                <input type="date" class="form-control" name="gitUpdatedDate" required min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                        }
+                        else if (ViewBag.requestObject.status == 10)
+                        {
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">Laptop Dispatch Date</label>
+                                <input type="date" class="form-control" name="laptopDispatchDate" required min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                        }
+                        else if (ViewBag.requestObject.status == 12)
+                        {
+                            <div class="mb-3">
+                                <label class="text-secondary custom-label">Laptop Collection Date</label>
+                                <input type="date" class="form-control" name="laptopCollectionDate" required min="@DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                        }
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" form="updateForm">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Confirm Close SR Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to close this SR Request ?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">No</button>
+                    <button class="btn btn-success" type="submit" form="closeForm">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid px-5 py-5">
+        <div class="card mb-3">
+            <div class="card-body">
+                <legend>Onboarding Details</legend>
+
+                <ul class="steps py-3">
+                    @if (ViewBag.requestObject.status == 2)
+                    {
+                        if ((Convert.ToInt32(ViewBag.requestObject.prevStatus) >= 4))
+                        {
+                    <li class="step step-success">
+                        <div class="step-content">
+                            <span class="step-circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg>
+                            </span>
+                            <span class="step-text">Laptop Request Raised</span>
+                        </div>
+                    </li>
+                        }
+                        if ((Convert.ToInt32(ViewBag.requestObject.prevStatus) >= 6))
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">SAP Code Updated</span>
+                                </div>
+                            </li>
+                        }
+                        if ((Convert.ToInt32(ViewBag.requestObject.prevStatus) >= 8))
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Completed By GIT</span>
+                                </div>
+                            </li>
+                        }
+                        if ((Convert.ToInt32(ViewBag.requestObject.prevStatus) >= 10))
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Laptop Dispatched</span>
+                                </div>
+                            </li>
+                        }
+                        if ((Convert.ToInt32(ViewBag.requestObject.prevStatus) >= 12))
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Laptop Collected</span>
+                                </div>
+                            </li>
+                        }
+                        <li class="step step-error">
+                            <div class="step-content">
+                                <span class="step-circle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                </span>
+                                <span class="step-text">RENEGE</span>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        if (ViewBag.requestObject.status == 4)
+                        {
+                            <li class="step step-active">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Laptop Request Pending</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Laptop Request Raised</span>
+                                </div>
+                            </li>
+                        }
+                        if (ViewBag.requestObject.status < 6)
+                        {
+                            <li class="step">
+                                <div class="step-content">
+                                    <span class="step-circle"></span>
+                                    <span class="step-text">SAP Code Pending</span>
+                                </div>
+                            </li>
+                        }
+                        else if (ViewBag.requestObject.status == 6)
+                        {
+                            <li class="step step-active">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">SAP Code Pending</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">SAP Code Updated</span>
+                                </div>
+                            </li>
+                        }
+                        if (ViewBag.requestObject.status < 8)
+                        {
+                            <li class="step">
+                                <div class="step-content">
+                                    <span class="step-circle"></span>
+                                    <span class="step-text">Pending With GIT</span>
+                                </div>
+                            </li>
+                        }
+                        else if (ViewBag.requestObject.status == 8)
+                        {
+                            <li class="step step-active">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Pending With GIT</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Completed by GIT</span>
+                                </div>
+                            </li>
+                        }
+                        if (ViewBag.requestObject.status < 10)
+                        {
+                            <li class="step">
+                                <div class="step-content">
+                                    <span class="step-circle"></span>
+                                    <span class="step-text">Pending Laptop Dispatch</span>
+                                </div>
+                            </li>
+                        }
+                        else if (ViewBag.requestObject.status == 10)
+                        {
+                            <li class="step step-active">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Pending Laptop Dispatch</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Laptop Dispatched</span>
+                                </div>
+                            </li>
+                        }
+                        if (ViewBag.requestObject.status < 12)
+                        {
+                            <li class="step">
+                                <div class="step-content">
+                                    <span class="step-circle"></span>
+                                    <span class="step-text">Pending Laptop Collection</span>
+                                </div>
+                            </li>
+                        }
+                        else if (ViewBag.requestObject.status == 12)
+                        {
+                            <li class="step step-active">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Pending Laptop Collection</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Laptop Collected</span>
+                                </div>
+                            </li>
+                        }
+                        if (ViewBag.requestObject.status == 13)
+                        {
+                            <li class="step step-success">
+                                <div class="step-content">
+                                    <span class="step-circle">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                    </span>
+                                    <span class="step-text">Fulfilled</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="step">
+                                <div class="step-content">
+                                    <span class="step-circle"></span>
+                                    <span class="step-text">Fulfilled</span>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
+                <hr />
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Request ID
+                        </span>
+                        @if (ViewBag.requestObject.pkID == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.pkID</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            First Name
+                        </span>
+                        @if (ViewBag.requestObject.firstName == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.firstName</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Last Name
+                        </span>
+                        @if (ViewBag.requestObject.lastName == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.lastName</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Email ID
+                        </span>
+                        @if (ViewBag.requestObject.emailID == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.emailID</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Contact Number
+                        </span>
+                        @if (ViewBag.requestObject.contactNumber == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.contactNumber</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Band
+                        </span>
+                        @if (ViewBag.requestObject.band == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.band</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Expected Joining Date
+                        </span>
+                        @if (ViewBag.requestObject.expectedJoiningDate == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.expectedJoiningDate.ToString("dd/MM/yyyy")</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Personal Sub Area
+                        </span>
+                        @if (ViewBag.requestObject.personalSubArea == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.personalSubArea</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Joining L4
+                        </span>
+                        @if (ViewBag.requestObject.joiningL4 == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.joiningL4</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Reporting Manager
+                        </span>
+                        @if (ViewBag.requestObject.reportingManager == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.reportingManager</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Recruiter
+                        </span>
+                        @if (ViewBag.requestObject.recruiter == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.recruiter</p>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            SR Number
+                        </span>
+                        @if (ViewBag.requestObject.srNumber == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.srNumber</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-wrap">
+                    <div class="col-md-3">
+                        <span class="text-secondary custom-label">
+                            Auto Request ID
+                        </span>
+                        @if (ViewBag.requestObject.autoReqID == null)
+                        {
+                            <p class="text-primary">NA</p>
+                        }
+                        else
+                        {
+                            <p class="text-primary">@ViewBag.requestObject.autoReqID</p>
+                        }
+                    </div>
+                </div>
+                @if ((ViewBag.requestObject.status >= 6) || (ViewBag.requestObject.status == 2))
+                {
+                    <hr />
+                    <div class="row text-wrap">
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Order ID
+                            </span>
+                            @if (ViewBag.requestObject.orderID == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.orderID</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Laptop Request Updated Date
+                            </span>
+                            @if (ViewBag.requestObject.laptopRequestUpdatedDate == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.laptopRequestUpdatedDate.ToString("dd/MM/yyyy")</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Laptop Request Update Remarks
+                            </span>
+                            @if (ViewBag.requestObject.laptopRequestUpdateRemarks == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.laptopRequestUpdateRemarks</p>
+                            }
+                        </div>
+                    </div>
+                }
+                @if ((ViewBag.requestObject.status >= 8) || (ViewBag.requestObject.status == 2))
+                {
+                    <hr />
+                    <div class="row text-wrap">
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                SAP ID
+                            </span>
+                            @if (ViewBag.requestObject.sapID == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.sapID</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                SAP ID Updated Date
+                            </span>
+                            @if (ViewBag.requestObject.sapIDUpdatedDate == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.sapIDUpdatedDate.ToString("dd/MM/yyyy")</p>
+                            }
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                SAP ID Updated Remarks
+                            </span>
+                            @if (ViewBag.requestObject.sapIDRemarks == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.sapIDRemarks</p>
+                            }
+                        </div>
+                    </div>
+                }
+                <hr />
+            <div class="row text-wrap">
+                @if ((ViewBag.requestObject.status >= 10) || (ViewBag.requestObject.status == 2))
+                {
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                GIT Updated Date
+                            </span>
+                            @if (ViewBag.requestObject.gitUpdatedDate == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.gitUpdatedDate.ToString("dd/MM/yyyy")</p>;
+                            }
+                        </div>
+                }
+                @if ((ViewBag.requestObject.status >= 12) || (ViewBag.requestObject.status == 2))
+                {
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Laptop Dispatched Date
+                            </span>
+                            @if (ViewBag.requestObject.laptopDispatchDate == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.laptopDispatchDate.ToString("dd/MM/yyyy")</p>;
+                            }
+                        </div>
+                }
+                @if ((ViewBag.requestObject.status >= 13) || (ViewBag.requestObject.status == 2))
+                {
+                        <div class="col-md-3">
+                            <span class="text-secondary custom-label">
+                                Laptop Collection Date
+                            </span>
+                            @if (ViewBag.requestObject.laptopCollectionDate == null)
+                            {
+                                <p class="text-primary">NA</p>
+                            }
+                            else
+                            {
+                                <p class="text-primary">@ViewBag.requestObject.laptopCollectionDate.ToString("dd/MM/yyyy")</p>;
+                            }
+                        </div>
+                }
+            </div>
+            </div>
+
+        </div>
+        <div class="bottom-bar w-100 d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary" onclick="javascript: window.history.back();" type="button">Back</button>
+            @if ((ViewBag.requestObject.status != 2) && (ViewBag.requestObject.status != 13))
+            {
+                <button class="btn btn-success justify-content-md-end" type="button" data-bs-toggle="modal" data-bs-target="#updateStatus">Update Status</button>
+            }
+            @if (ViewBag.requestObject.status != 2)
+            {
+                <button class="btn btn-danger justify-content-md-end" type="button" data-bs-toggle="modal" data-bs-target="#setRENEGEStatusToggle">Set RENEGE</button>
+            }
+        </div>
+        <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+        <script>
+            $('#closeModal').on('shown.bs.modal', function () {
+                $('#submitBtn').focus();
+            });
+            $(document).ready(function () {
+                $('.sapid-error-msg1').hide();
+                $('.sapID1').on('focusout', function () {
+                    v = parseInt($(this).val());
+                    min = parseInt($(this).attr('min'));
+                    max = parseInt($(this).attr('max'));
+
+                    if (v < min) {
+                        $(this).val(null);
+                        $('.sapid-error-msg1').show();
+                    } else if (v > max) {
+                        $(this).val(null);
+                        $('.sapid-error-msg1').show();
+                    }
+                    else {
+                        $('.sapid-error-msg1').hide();
+                    }
+                })
+            });
+        </script>
+        <script src="~/Scripts/Popper.js"></script>
+</body>

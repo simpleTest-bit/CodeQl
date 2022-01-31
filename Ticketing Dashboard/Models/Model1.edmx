@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TicketingToolDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Band_Master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="band" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Laptop_Master">
+          <Key>
+            <PropertyRef Name="srPk" />
+          </Key>
+          <Property Name="srPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="requesterLocation" Type="varchar" MaxLength="100" />
+          <Property Name="requesterEmailID" Type="varchar" MaxLength="100" />
+          <Property Name="requestType" Type="varchar" MaxLength="100" />
+          <Property Name="issueDetails" Type="varchar" MaxLength="500" />
+          <Property Name="name" Type="varchar" MaxLength="100" />
+          <Property Name="dateOfTravel" Type="date" />
+          <Property Name="laptopType" Type="varchar" MaxLength="100" />
+          <Property Name="actionTaken" Type="varchar" MaxLength="500" />
+          <Property Name="dateOfClosing" Type="date" />
+          <Property Name="status" Type="varchar" MaxLength="100" />
+          <Property Name="isDeleted" Type="varchar" MaxLength="100" />
+          <Property Name="createdDate" Type="date" />
+          <Property Name="sapid" Type="int" />
+          <Property Name="replacementType" Type="varchar" MaxLength="50" />
+          <Property Name="fromLocation" Type="varchar" MaxLength="50" />
+          <Property Name="toLocation" Type="varchar" MaxLength="50" />
+          <Property Name="isLaptopRequired" Type="bit" />
+          <Property Name="laptopUpdatedDate" Type="date" />
+          <Property Name="slaDate" Type="date" />
+          <Property Name="remarks" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Location_Master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="country" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Login_Master">
+          <Key>
+            <PropertyRef Name="loginPk" />
+          </Key>
+          <Property Name="loginPk" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="100" />
+          <Property Name="loginPassword" Type="varchar" MaxLength="100" />
+          <Property Name="loginRole" Type="varchar" MaxLength="100" />
+          <Property Name="loginStatus" Type="varchar" MaxLength="100" />
+          <Property Name="createdDate" Type="date" />
+          <Property Name="emailID" Type="varchar" MaxLength="100" />
+          <Property Name="isDeleted" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Mail_Master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="200" />
+          <Property Name="type" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Onboarding_Master">
+          <Key>
+            <PropertyRef Name="contactNumber" />
+          </Key>
+          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="expectedJoiningDate" Type="date" />
+          <Property Name="band" Type="varchar" MaxLength="100" />
+          <Property Name="personalSubArea" Type="varchar" MaxLength="100" />
+          <Property Name="joiningL4" Type="varchar" MaxLength="100" />
+          <Property Name="reportingManager" Type="varchar" MaxLength="100" />
+          <Property Name="recruiter" Type="varchar" MaxLength="100" />
+          <Property Name="srNumber" Type="varchar" MaxLength="100" />
+          <Property Name="contactNumber" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="autoReqID" Type="varchar" MaxLength="100" />
+          <Property Name="firstName" Type="varchar" MaxLength="100" />
+          <Property Name="lastName" Type="varchar" MaxLength="100" />
+          <Property Name="emailID" Type="varchar" MaxLength="100" />
+          <Property Name="isDeleted" Type="varchar" MaxLength="100" />
+          <Property Name="createdDate" Type="date" />
+          <Property Name="status" Type="int" />
+          <Property Name="actualJoiningDate" Type="date" />
+          <Property Name="orderID" Type="int" />
+          <Property Name="laptopRequestUpdatedDate" Type="date" />
+          <Property Name="laptopRequestUpdateRemarks" Type="varchar" MaxLength="500" />
+          <Property Name="sapID" Type="int" />
+          <Property Name="sapIDUpdatedDate" Type="date" />
+          <Property Name="sapIDRemarks" Type="varchar" MaxLength="500" />
+          <Property Name="gitUpdatedDate" Type="date" />
+          <Property Name="laptopDispatchDate" Type="date" />
+          <Property Name="laptopCollectionDate" Type="date" />
+          <Property Name="prevStatus" Type="int" />
+          <Property Name="RENEGEUpdatedDate" Type="date" />
+          <Property Name="RENEGERemarks" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SR_Request">
+          <Key>
+            <PropertyRef Name="srPk" />
+          </Key>
+          <Property Name="srPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="requisitionSource" Type="varchar" MaxLength="50" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="sapid" Type="varchar" MaxLength="50" />
+          <Property Name="projectName" Type="varchar" MaxLength="50" />
+          <Property Name="positionType" Type="varchar" MaxLength="50" />
+          <Property Name="experience" Type="decimal" Precision="18" Scale="1" />
+          <Property Name="noOfPosition" Type="int" />
+          <Property Name="designation" Type="varchar" MaxLength="50" />
+          <Property Name="band" Type="varchar" MaxLength="50" />
+          <Property Name="billStartDate" Type="date" />
+          <Property Name="onboardingDate" Type="date" />
+          <Property Name="RMSapid" Type="varchar" MaxLength="50" />
+          <Property Name="billingLossStartDate" Type="date" />
+          <Property Name="location" Type="varchar" MaxLength="50" />
+          <Property Name="role" Type="varchar" MaxLength="50" />
+          <Property Name="employeeGroup" Type="varchar" MaxLength="50" />
+          <Property Name="isContract" Type="varchar" MaxLength="3" />
+          <Property Name="contratToDate" Type="date" />
+          <Property Name="contractFromDate" Type="date" />
+          <Property Name="buyRate" Type="decimal" Precision="18" Scale="1" />
+          <Property Name="contractType" Type="varchar" MaxLength="50" />
+          <Property Name="sellRate" Type="decimal" Precision="18" Scale="1" />
+          <Property Name="skillSet" Type="varchar" MaxLength="500" />
+          <Property Name="primarySkill" Type="varchar" MaxLength="500" />
+          <Property Name="secondarySkill" Type="varchar" MaxLength="500" />
+          <Property Name="interviewerSapid1" Type="varchar" MaxLength="50" />
+          <Property Name="interviewerSapid2" Type="varchar" MaxLength="50" />
+          <Property Name="createdDate" Type="datetime" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="isDeleted" Type="bit" />
+          <Property Name="remarks" Type="varchar" MaxLength="100" />
+          <Property Name="srNo" Type="varchar" MaxLength="10" />
+          <Property Name="closingDate" Type="datetime" />
+          <Property Name="RPFUpdated" Type="varchar" MaxLength="5" />
+          <Property Name="requesterEmailID" Type="varchar" MaxLength="100" />
+          <Property Name="slaDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Status_Master">
+          <Key>
+            <PropertyRef Name="statusPk" />
+          </Key>
+          <Property Name="statusPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="statusName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TicketingToolDB.dbo.VW_OnboardingMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VW_OnboardingMaster">
+          <Key>
+            <PropertyRef Name="pkID" />
+            <PropertyRef Name="contactNumber" />
+            <PropertyRef Name="statusPK" />
+          </Key>
+          <Property Name="pkID" Type="int" Nullable="false" />
+          <Property Name="expectedJoiningDate" Type="date" />
+          <Property Name="band" Type="varchar" MaxLength="100" />
+          <Property Name="personalSubArea" Type="varchar" MaxLength="100" />
+          <Property Name="joiningL4" Type="varchar" MaxLength="100" />
+          <Property Name="reportingManager" Type="varchar" MaxLength="100" />
+          <Property Name="recruiter" Type="varchar" MaxLength="100" />
+          <Property Name="srNumber" Type="varchar" MaxLength="100" />
+          <Property Name="contactNumber" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="autoReqID" Type="varchar" MaxLength="100" />
+          <Property Name="firstName" Type="varchar" MaxLength="100" />
+          <Property Name="lastName" Type="varchar" MaxLength="100" />
+          <Property Name="emailID" Type="varchar" MaxLength="100" />
+          <Property Name="isDeleted" Type="varchar" MaxLength="100" />
+          <Property Name="createdDate" Type="date" />
+          <Property Name="status" Type="int" />
+          <Property Name="statusPK" Type="int" Nullable="false" />
+          <Property Name="statusName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityContainer Name="TicketingToolDBModelStoreContainer">
+          <EntitySet Name="Band_Master" EntityType="Self.Band_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Laptop_Master" EntityType="Self.Laptop_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location_Master" EntityType="Self.Location_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login_Master" EntityType="Self.Login_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mail_Master" EntityType="Self.Mail_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Onboarding_Master" EntityType="Self.Onboarding_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SR_Request" EntityType="Self.SR_Request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status_Master" EntityType="Self.Status_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VW_OnboardingMaster" EntityType="Self.VW_OnboardingMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_OnboardingMaster].[pkID] AS [pkID], 
+    [VW_OnboardingMaster].[expectedJoiningDate] AS [expectedJoiningDate], 
+    [VW_OnboardingMaster].[band] AS [band], 
+    [VW_OnboardingMaster].[personalSubArea] AS [personalSubArea], 
+    [VW_OnboardingMaster].[joiningL4] AS [joiningL4], 
+    [VW_OnboardingMaster].[reportingManager] AS [reportingManager], 
+    [VW_OnboardingMaster].[recruiter] AS [recruiter], 
+    [VW_OnboardingMaster].[srNumber] AS [srNumber], 
+    [VW_OnboardingMaster].[contactNumber] AS [contactNumber], 
+    [VW_OnboardingMaster].[autoReqID] AS [autoReqID], 
+    [VW_OnboardingMaster].[firstName] AS [firstName], 
+    [VW_OnboardingMaster].[lastName] AS [lastName], 
+    [VW_OnboardingMaster].[emailID] AS [emailID], 
+    [VW_OnboardingMaster].[isDeleted] AS [isDeleted], 
+    [VW_OnboardingMaster].[createdDate] AS [createdDate], 
+    [VW_OnboardingMaster].[status] AS [status], 
+    [VW_OnboardingMaster].[statusPK] AS [statusPK], 
+    [VW_OnboardingMaster].[statusName] AS [statusName]
+    FROM [dbo].[VW_OnboardingMaster] AS [VW_OnboardingMaster]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TicketingToolDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Band_Master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="band" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Laptop_Master">
+          <Key>
+            <PropertyRef Name="srPk" />
+          </Key>
+          <Property Name="srPk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="requesterLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="requesterEmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="requestType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="issueDetails" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="dateOfTravel" Type="DateTime" Precision="0" />
+          <Property Name="laptopType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="actionTaken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="dateOfClosing" Type="DateTime" Precision="0" />
+          <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isDeleted" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="createdDate" Type="DateTime" Precision="0" />
+          <Property Name="sapid" Type="Int32" />
+          <Property Name="replacementType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fromLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="toLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isLaptopRequired" Type="Boolean" />
+          <Property Name="laptopUpdatedDate" Type="DateTime" Precision="0" />
+          <Property Name="slaDate" Type="DateTime" Precision="0" />
+          <Property Name="remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Location_Master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Login_Master">
+          <Key>
+            <PropertyRef Name="loginPk" />
+          </Key>
+          <Property Name="loginPk" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="loginPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="loginRole" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="loginStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="createdDate" Type="DateTime" Precision="0" />
+          <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isDeleted" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Mail_Master">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Onboarding_Master">
+          <Key>
+            <PropertyRef Name="contactNumber" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="expectedJoiningDate" Type="DateTime" Precision="0" />
+          <Property Name="band" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="personalSubArea" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="joiningL4" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="reportingManager" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="recruiter" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="srNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contactNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="autoReqID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isDeleted" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="createdDate" Type="DateTime" Precision="0" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="actualJoiningDate" Type="DateTime" Precision="0" />
+          <Property Name="orderID" Type="Int32" />
+          <Property Name="laptopRequestUpdatedDate" Type="DateTime" Precision="0" />
+          <Property Name="laptopRequestUpdateRemarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="sapID" Type="Int32" />
+          <Property Name="sapIDUpdatedDate" Type="DateTime" Precision="0" />
+          <Property Name="sapIDRemarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="gitUpdatedDate" Type="DateTime" Precision="0" />
+          <Property Name="laptopDispatchDate" Type="DateTime" Precision="0" />
+          <Property Name="laptopCollectionDate" Type="DateTime" Precision="0" />
+          <Property Name="prevStatus" Type="Int32" />
+          <Property Name="RENEGEUpdatedDate" Type="DateTime" Precision="0" />
+          <Property Name="RENEGERemarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SR_Request">
+          <Key>
+            <PropertyRef Name="srPk" />
+          </Key>
+          <Property Name="srPk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="requisitionSource" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sapid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="projectName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="positionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="experience" Type="Decimal" Precision="18" Scale="1" />
+          <Property Name="noOfPosition" Type="Int32" />
+          <Property Name="designation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="band" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="billStartDate" Type="DateTime" Precision="0" />
+          <Property Name="onboardingDate" Type="DateTime" Precision="0" />
+          <Property Name="RMSapid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="billingLossStartDate" Type="DateTime" Precision="0" />
+          <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="employeeGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isContract" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="contratToDate" Type="DateTime" Precision="0" />
+          <Property Name="contractFromDate" Type="DateTime" Precision="0" />
+          <Property Name="buyRate" Type="Decimal" Precision="18" Scale="1" />
+          <Property Name="contractType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sellRate" Type="Decimal" Precision="18" Scale="1" />
+          <Property Name="skillSet" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="primarySkill" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="secondarySkill" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="interviewerSapid1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="interviewerSapid2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="createdDate" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isDeleted" Type="Boolean" />
+          <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="srNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="closingDate" Type="DateTime" Precision="3" />
+          <Property Name="RPFUpdated" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="requesterEmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="slaDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Status_Master">
+          <Key>
+            <PropertyRef Name="statusPk" />
+          </Key>
+          <Property Name="statusPk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="statusName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VW_OnboardingMaster">
+          <Key>
+            <PropertyRef Name="pkID" />
+            <PropertyRef Name="contactNumber" />
+            <PropertyRef Name="statusPK" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" />
+          <Property Name="expectedJoiningDate" Type="DateTime" Precision="0" />
+          <Property Name="band" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="personalSubArea" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="joiningL4" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="reportingManager" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="recruiter" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="srNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contactNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="autoReqID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isDeleted" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="createdDate" Type="DateTime" Precision="0" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="statusPK" Type="Int32" Nullable="false" />
+          <Property Name="statusName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="TicketingToolDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Band_Master" EntityType="Self.Band_Master" />
+          <EntitySet Name="Laptop_Master" EntityType="Self.Laptop_Master" />
+          <EntitySet Name="Location_Master" EntityType="Self.Location_Master" />
+          <EntitySet Name="Login_Master" EntityType="Self.Login_Master" />
+          <EntitySet Name="Mail_Master" EntityType="Self.Mail_Master" />
+          <EntitySet Name="Onboarding_Master" EntityType="Self.Onboarding_Master" />
+          <EntitySet Name="SR_Request" EntityType="Self.SR_Request" />
+          <EntitySet Name="Status_Master" EntityType="Self.Status_Master" />
+          <EntitySet Name="VW_OnboardingMaster" EntityType="Self.VW_OnboardingMaster" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TicketingToolDBModelStoreContainer" CdmEntityContainer="TicketingToolDBEntities">
+          <EntitySetMapping Name="Band_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Band_Master">
+              <MappingFragment StoreEntitySet="Band_Master">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="band" ColumnName="band" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Laptop_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Laptop_Master">
+              <MappingFragment StoreEntitySet="Laptop_Master">
+                <ScalarProperty Name="srPk" ColumnName="srPk" />
+                <ScalarProperty Name="requesterLocation" ColumnName="requesterLocation" />
+                <ScalarProperty Name="requesterEmailID" ColumnName="requesterEmailID" />
+                <ScalarProperty Name="requestType" ColumnName="requestType" />
+                <ScalarProperty Name="issueDetails" ColumnName="issueDetails" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="dateOfTravel" ColumnName="dateOfTravel" />
+                <ScalarProperty Name="laptopType" ColumnName="laptopType" />
+                <ScalarProperty Name="actionTaken" ColumnName="actionTaken" />
+                <ScalarProperty Name="dateOfClosing" ColumnName="dateOfClosing" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="sapid" ColumnName="sapid" />
+                <ScalarProperty Name="replacementType" ColumnName="replacementType" />
+                <ScalarProperty Name="fromLocation" ColumnName="fromLocation" />
+                <ScalarProperty Name="toLocation" ColumnName="toLocation" />
+                <ScalarProperty Name="isLaptopRequired" ColumnName="isLaptopRequired" />
+                <ScalarProperty Name="laptopUpdatedDate" ColumnName="laptopUpdatedDate" />
+                <ScalarProperty Name="slaDate" ColumnName="slaDate" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Location_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Location_Master">
+              <MappingFragment StoreEntitySet="Location_Master">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="country" ColumnName="country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Login_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Login_Master">
+              <MappingFragment StoreEntitySet="Login_Master">
+                <ScalarProperty Name="loginPk" ColumnName="loginPk" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="loginPassword" ColumnName="loginPassword" />
+                <ScalarProperty Name="loginRole" ColumnName="loginRole" />
+                <ScalarProperty Name="loginStatus" ColumnName="loginStatus" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mail_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Mail_Master">
+              <MappingFragment StoreEntitySet="Mail_Master">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Onboarding_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Onboarding_Master">
+              <MappingFragment StoreEntitySet="Onboarding_Master">
+                <ScalarProperty Name="RENEGERemarks" ColumnName="RENEGERemarks" />
+                <ScalarProperty Name="RENEGEUpdatedDate" ColumnName="RENEGEUpdatedDate" />
+                <ScalarProperty Name="prevStatus" ColumnName="prevStatus" />
+                <ScalarProperty Name="laptopCollectionDate" ColumnName="laptopCollectionDate" />
+                <ScalarProperty Name="laptopDispatchDate" ColumnName="laptopDispatchDate" />
+                <ScalarProperty Name="gitUpdatedDate" ColumnName="gitUpdatedDate" />
+                <ScalarProperty Name="sapIDRemarks" ColumnName="sapIDRemarks" />
+                <ScalarProperty Name="sapIDUpdatedDate" ColumnName="sapIDUpdatedDate" />
+                <ScalarProperty Name="sapID" ColumnName="sapID" />
+                <ScalarProperty Name="laptopRequestUpdateRemarks" ColumnName="laptopRequestUpdateRemarks" />
+                <ScalarProperty Name="laptopRequestUpdatedDate" ColumnName="laptopRequestUpdatedDate" />
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="actualJoiningDate" ColumnName="actualJoiningDate" />
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+                <ScalarProperty Name="expectedJoiningDate" ColumnName="expectedJoiningDate" />
+                <ScalarProperty Name="band" ColumnName="band" />
+                <ScalarProperty Name="personalSubArea" ColumnName="personalSubArea" />
+                <ScalarProperty Name="joiningL4" ColumnName="joiningL4" />
+                <ScalarProperty Name="reportingManager" ColumnName="reportingManager" />
+                <ScalarProperty Name="recruiter" ColumnName="recruiter" />
+                <ScalarProperty Name="srNumber" ColumnName="srNumber" />
+                <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+                <ScalarProperty Name="autoReqID" ColumnName="autoReqID" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SR_Request">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.SR_Request">
+              <MappingFragment StoreEntitySet="SR_Request">
+                <ScalarProperty Name="srPk" ColumnName="srPk" />
+                <ScalarProperty Name="requisitionSource" ColumnName="requisitionSource" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="sapid" ColumnName="sapid" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="positionType" ColumnName="positionType" />
+                <ScalarProperty Name="experience" ColumnName="experience" />
+                <ScalarProperty Name="noOfPosition" ColumnName="noOfPosition" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="band" ColumnName="band" />
+                <ScalarProperty Name="billStartDate" ColumnName="billStartDate" />
+                <ScalarProperty Name="onboardingDate" ColumnName="onboardingDate" />
+                <ScalarProperty Name="RMSapid" ColumnName="RMSapid" />
+                <ScalarProperty Name="billingLossStartDate" ColumnName="billingLossStartDate" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="employeeGroup" ColumnName="employeeGroup" />
+                <ScalarProperty Name="isContract" ColumnName="isContract" />
+                <ScalarProperty Name="contratToDate" ColumnName="contratToDate" />
+                <ScalarProperty Name="contractFromDate" ColumnName="contractFromDate" />
+                <ScalarProperty Name="buyRate" ColumnName="buyRate" />
+                <ScalarProperty Name="contractType" ColumnName="contractType" />
+                <ScalarProperty Name="sellRate" ColumnName="sellRate" />
+                <ScalarProperty Name="skillSet" ColumnName="skillSet" />
+                <ScalarProperty Name="primarySkill" ColumnName="primarySkill" />
+                <ScalarProperty Name="secondarySkill" ColumnName="secondarySkill" />
+                <ScalarProperty Name="interviewerSapid1" ColumnName="interviewerSapid1" />
+                <ScalarProperty Name="interviewerSapid2" ColumnName="interviewerSapid2" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+                <ScalarProperty Name="srNo" ColumnName="srNo" />
+                <ScalarProperty Name="closingDate" ColumnName="closingDate" />
+                <ScalarProperty Name="RPFUpdated" ColumnName="RPFUpdated" />
+                <ScalarProperty Name="requesterEmailID" ColumnName="requesterEmailID" />
+                <ScalarProperty Name="slaDate" ColumnName="slaDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status_Master">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.Status_Master">
+              <MappingFragment StoreEntitySet="Status_Master">
+                <ScalarProperty Name="statusPk" ColumnName="statusPk" />
+                <ScalarProperty Name="statusName" ColumnName="statusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_OnboardingMaster">
+            <EntityTypeMapping TypeName="TicketingToolDBModel.VW_OnboardingMaster">
+              <MappingFragment StoreEntitySet="VW_OnboardingMaster">
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+                <ScalarProperty Name="expectedJoiningDate" ColumnName="expectedJoiningDate" />
+                <ScalarProperty Name="band" ColumnName="band" />
+                <ScalarProperty Name="personalSubArea" ColumnName="personalSubArea" />
+                <ScalarProperty Name="joiningL4" ColumnName="joiningL4" />
+                <ScalarProperty Name="reportingManager" ColumnName="reportingManager" />
+                <ScalarProperty Name="recruiter" ColumnName="recruiter" />
+                <ScalarProperty Name="srNumber" ColumnName="srNumber" />
+                <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+                <ScalarProperty Name="autoReqID" ColumnName="autoReqID" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="statusPK" ColumnName="statusPK" />
+                <ScalarProperty Name="statusName" ColumnName="statusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

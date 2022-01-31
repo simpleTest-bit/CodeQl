@@ -1,0 +1,42 @@
+﻿body {
+    background-color: #0D97EF !important;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+legend {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #027CDA;
+}
+
+.custom-label {
+    font-size: 13px;
+}
+
+p {
+    font-size: 16px;
+}
+
+hr {
+    opacity: 0.1;
+}
+
+.bottom-bar {
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 12px;
+    padding-left: 48px;
+    border: #9c9c9c solid 1px;
+}
+
+.alert {
+    position: relative;
+    width: 100%;
+}
+
+.alert- {
+    visibility: hidden;
+    display: none;
+}

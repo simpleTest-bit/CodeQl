@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.Title = "SR Request Form";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/Index.css">
+<link rel="stylesheet" href="~/Content/jquery-ui.min.css">
+<div class="alert alert-@TempData["MessageType"]" role="alert">
+    @TempData["Message"]
+    <div class="float-end">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Request Submission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit this request ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="srForm" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-5 py-5 scd-border">
+    <div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <legend>SR Request Form</legend>
+                <form action="/Home/AddSRRequest" id="srForm" method="post" class="row g-4 needs-validation">
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-6">
+                        <label class="form-label">Requisition Source <font style="color: red">*</font></label>
+                        <select class="form-select w-100" onchange="toggleSAPID();" aria-label="requisition-source" id="reqsource" name="requisitionSource" required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            <option>New</option>
+                            <option>Rotation</option>
+                            <option>Attrition</option>
+                            <option>TP to FT</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label text-muted">Resource Name <font style="color: red">*</font></label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="col-md-6" id="sapid">
+                        <label for="inputPassword4" class="form-label text-muted">Resource SAP ID <font style="color: red">*</font></label>
+                        <input type="number" class="form-control sapID1" min="10000000" max="99999999" id="sapidInput" name="sapid">
+                        <div class="sapid-error-msg1"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Project Name <font style="color: red">*</font></label>
+                        <input type="text" class="form-control" name="projectName" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label text-muted">Position <font style="color: red">*</font></label>
+                        <select class="form-select" aria-label="position" name="positionType" required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            <option>Confirm Position</option>
+                            <option>Proactive Hire</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label text-muted">Experience <font style="color: red">*</font></label>
+                        <input type="number" step=".1" min="0" class="form-control" name="experience" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">No. of Positions <font style="color: red">*</font></label>
+                        <input type="number" class="form-control" name="noOfPosition" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label text-muted">Designation <font style="color: red">*</font></label>
+                        <input type="text" class="form-control" name="designation" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Band <font style="color: red">*</font></label>
+                        <select class="form-select" aria-label="position" name="band" required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            @foreach (var band in ViewBag.BandList)
+                            {
+                                <option>@band.band</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label text-muted date-selector">Bill Start Date <font style="color: red">*</font></label>
+                        <input type="date" class="form-control" onkeypress="javascript: return false;" id="billStartDate" onchange="updateOnboardingDate(event);" name="billStartDate" value="@DateTime.Now.AddMonths(3).ToString("yyyy-MM-dd")" autocomplete="off" required>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted date-selector">Onboarding Date <font style="color: red">*</font></label>
+                        <input type="date" class="form-control" onkeypress="javascript: return false;" id="onboardingDate" onchange="updateBillLossStartDate(event);" name="onboardingDate" value="@DateTime.Now.AddMonths(3).ToString("yyyy-MM-dd")" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Reporting Manager SAP ID <font style="color: red">*</font></label>
+                        <input type="number" class="form-control sapID2" min="10000000" max="99999999" pattern="[1-9][0-9]{7}" name="RMSapid" required>
+                        <div class="sapid-error-msg2"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted date-selector">Actual Billing Loss Start Date (revenue leakage) <font style="color: red">*</font></label>
+                        <input type="date" class="form-control" onkeypress="javascript: return false;" id="billingLossStartDate" name="billingLossStartDate" value="@DateTime.Now.AddMonths(3).ToString("yyyy-MM-dd")" required>
+                        <label class="form-label text-muted"><font style="color: red">**</font><font style="font-size: small;">as per customer confirmation</font></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Location <font style="color: red">*</font></label>
+                        <select class="form-select" aria-label="position" id="location" onchange="this.size=1; this.blur(); toggleLocation();" name="location" onfocus="this.size=3;" onblur='this.size=1;' required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            @foreach (var location in ViewBag.LocationList)
+                            {
+                                <option>@location.city</option>
+                            }
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 otherLocation">
+                        <label class="form-label text-muted">Other Location ...</label>
+                        <input type="text" class="form-control" name="otherLocation">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Role <font style="color: red">*</font></label>
+                        <select class="form-select" aria-label="position" name="role" required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            <option>SDE</option>
+                            <option>SDET</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Employee Group <font style="color: red">*</font></label>
+                        <select class="form-select" onchange="test();" id="condition" name="employeeGroup" required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Contract">Contract</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 fieldToToggle date-selector">
+                        <label class="form-label text-muted">Contract From Date</label>
+                        <input type="date" class="form-control" onkeypress="javascript: return false;" id="contractFromDate" onchange="updateContractToDate();" name="contractFromDate">
+                    </div>
+                    <div class="col-md-6 fieldToToggle date-selector">
+                        <label class="form-label text-muted">Contract To Date</label>
+                        <input type="date" class="form-control" onkeypress="javascript: return false;" id="contractToDate" name="contratToDate">
+                    </div>
+                    <div class="col-md-6 fieldToToggle" id="buy-rate">
+                        <label class="form-label text-muted">Buy Rate</label>
+                        <input type="number" class="form-control" name="buyRate">
+                    </div>
+                    <div class="col-md-6 fieldToToggle" id="sell-rate">
+                        <label class="form-label text-muted">Sell Rate</label>
+                        <input type="number" class="form-control" name="sellRate">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Skillset/ID <font style="color: red">*</font></label>
+                        <input type="text" class="form-control" name="skillSet" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Primary Skill <font style="color: red">*</font></label>
+                        <input type="text" class="form-control" name="primarySkill" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Secondary Skills <font style="color: red">*</font></label>
+                        <input type="text" class="form-control" name="secondarySkill" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Interviewer 1 SAP ID <font style="color: red">*</font></label>
+                        <input type="number" class="form-control sapID3" min="10000000" max="99999999" name="interviewerSapid1" required>
+                        <div class="sapid-error-msg3"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Interviewer 2 SAP ID <font style="color: red">*</font></label>
+                        <input type="number" class="form-control sapID4" id="sapID" min="10000000" max="99999999" name="interviewerSapid2" required>
+                        <div class="sapid-error-msg4"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">RPF Updated <font style="color: red">*</font></label>
+                        <select class="form-select contractTypeToggle" aria-label="contractType" name="RPFUpdated" required>
+                            <option selected disabled hidden value="">Select an option</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label text-muted">Requester Email ID <font style="color: red">*</font></label>
+                        <input type="email" class="form-control" name="requesterEmailID" required>
+                    </div>
+                    <div class="col-12 float-end">
+                        <font style="font-size: small; color: red;">*<font style="color: black;"> Required</font></font>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/SR_Request.js"></script>

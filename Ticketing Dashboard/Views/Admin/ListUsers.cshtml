@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "All Users";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css">
+<script type="text/javascript" charset="utf8" src="~/Scripts/datatables.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/SRDetails.css">
+<div class="alert alert-@TempData["CreateUserMessageType"]" role="alert">
+    @TempData["CreateUserMessage"]
+    <div class="float-end">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<div class="container-fluid px-5 py-5">
+    <div class="card mb-3">
+        <div class="card-body overflow-scroll">
+            <fieldset class="scheduler-border">
+                <legend>All User Details</legend>
+                <br />
+                <br />
+                <table class="table table-striped overflow-scroll" id="data-table">
+                    <thead>
+                        <tr>
+                            <td><strong>#</strong></td>
+                            <td><strong>User ID</strong></td>
+                            <td><strong>UserName</strong></td>
+                            <td><strong>Email ID</strong></td>
+                            <td><strong>Login Role</strong></td>
+                            <td><strong>Created Date</strong></td>
+                            <td><strong>Status</strong></td>
+                            <td><strong>Delete User</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;
+                            foreach (var item in ViewBag.users)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.loginPk</td>
+                                    <td>@item.username</td>
+                                    <td>@item.emailID</td>
+                                    <td>@item.loginRole</td>
+                                    <td>@item.createdDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.loginStatus</td>
+                                    <td><a href="/Admin/DeleteUser/@item.loginPk">Delete</a></td>
+                                </tr>
+                                i = i + 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <button class="btn btn-primary" onclick="javascript: window.history.back();">Back</button>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/SRDetails.js"></script>

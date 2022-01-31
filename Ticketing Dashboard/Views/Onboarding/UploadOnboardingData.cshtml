@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "HCL Ticketing Tool";
+}
+<link rel="stylesheet" href="~/Content/Index.css" />
+<div class="alert alert-@ViewBag.messagetype" role="alert">
+    @ViewBag.message
+    <div class="float-end">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<div class="container-fluid px-3 py-3">
+    <div class="card mb-3">
+        <div class="card-body px-3 py-3">
+            <legend>Upload Onboarding Data</legend>
+            <form action="/Onboarding/UploadOnboardingData" method="post" enctype="multipart/form-data">
+                <div class="row g-3 p-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Upload Excel File</label>
+                        <input class="form-control" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="excelFile" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Sample Excel Link</label><br />
+                        <a href="/Onboarding/DownloadSampleExcelFile">Download Sample Excel</a>
+                    </div>
+                </div>
+                <div class="row g-3 p-3">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>

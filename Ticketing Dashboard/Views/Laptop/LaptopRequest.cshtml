@@ -1,0 +1,278 @@
+﻿
+@{
+    ViewBag.Title = "Laptop Request";
+}
+<link rel="stylesheet" href="~/Content/AdminDashboard.css" />
+<link rel="stylesheet" href="~/Content/LaptopRequest.css" />
+<div class="alert alert-@TempData["MessageType"]" role="alert">
+    @TempData["Message"]
+    <div class="float-end">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<div class="modal fade w-100" id="breakFixModalToggle1" aria-hidden="true" aria-labelledby="breakFixModalToggle1Label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="breakFixModalToggle1Label">Create Break Fix Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="breakFix" action="/Laptop/AddLaptopRequest" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="container-fluid px-3 py-3">
+                        <input type="hidden" name="requestType" value="Break Fix" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Name  <font style="color: red">*</font></label>
+                                <input type="text" class="form-control" name="name" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">SAP ID  <font style="color: red">*</font></label>
+                                <input type="number" class="form-control sapID1" min="10000000" max="99999999" name="sapid" required />
+                                <div class="sapid-error-msg1"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                            </div>
+                        </div>
+                        <div class="row g-3 pt-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Location <font style="color: red">*</font></label>
+                                <select class="form-select" aria-label="position" id="location" onchange="this.size=1; this.blur(); toggleLocation();" name="requesterLocation" onfocus="this.size=3;" onblur='this.size=1;' required>
+                                    <option selected disabled hidden value="">Select an option</option>
+                                    @foreach (var location in ViewBag.LocationList)
+                                    {
+                                        <option>@location.city</option>
+                                    }
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 otherLocation">
+                                <label class="form-label text-muted">Other Location ...</label>
+                                <input type="text" class="form-control" name="otherLocation">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Requester Email ID  <font style="color: red">*</font></label>
+                                <input type="email" class="form-control" name="requesterEmailID" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Type <font style="color: red">*</font></label>
+                                <select class="form-select" name="replacementType" required>
+                                    <option selected disabled hidden value="">Select an option</option>
+                                    <option>EOL</option>
+                                    <option>RAM Upgrade</option>
+                                    <option>Laptop Upgrade</option>
+                                    <option>Miscellaneous</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-3 pt-3">
+                            <div class="col-md-12">
+                                <label class="form-label text-muted ">Issue Details  <font style="color: red">*</font></label>
+                                <textarea class="form-control" required placeholder="Issue Details" id="floatingTextarea2" name="issueDetails" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" form="breakFix" id="formSubmitBtn">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="breakFixModalToggle2" aria-hidden="true" aria-labelledby="breakFixModalToggle1Label2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="breakFixModalToggle1Label2">Confirm Form Submission</h5>
+                <button type="button" id="breakFixModal2CloseBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit this request ?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger" data-bs-target="#breakFixModalToggle1" onclick="javascript: document.getElementById('breakFixModal2CloseBtn').click();" data-bs-dismiss="modal">No</button>
+                <button class="btn btn-success" form="breakFix" type="submit">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="offshoreModalToggle" aria-hidden="true" aria-labelledby="offshoreModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="offshoreModalToggleLabel">Create Moving Onshore / Offshore Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/Laptop/AddLaptopRequest" method="post" id="offshoreForm">
+                    <div class="container-fluid px-3 py-3">
+                        <input type="hidden" name="requestType" value="Moving To Onshore / Offshore" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Name <font style="color: red">*</font></label>
+                                <input type="text" class="form-control" name="name" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">SAP ID  <font style="color: red">*</font></label>
+                                <input type="number" class="form-control sapID2" min="10000000" max="99999999" name="sapid" required />
+                                <div class="sapid-error-msg2"><label class="form-label text-muted"><font class="error-msg">SAP ID must be of 8 digits</font></label></div>
+                            </div>
+                        </div>
+                        <div class="row g-3 pt-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">From Location <font style="color: red">*</font></label>
+                                <select class="form-select" aria-label="position" id="location2" onchange="this.size=1; this.blur(); toggleLocation2();" name="otherFromLocation" onfocus="this.size=3;" onblur='this.size=1;' required>
+                                    <option selected disabled hidden value="">Select an option</option>
+                                    @foreach (var location in ViewBag.LocationList)
+                                    {
+                                        <option>@location.city</option>
+                                    }
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 otherLocation2">
+                                <label class="form-label text-muted">Other From Location ...</label>
+                                <input type="text" class="form-control" name="otherFromLocation">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">To Location <font style="color: red">*</font></label>
+                                <select class="form-select" aria-label="position" id="location3" onchange="this.size=1; this.blur(); toggleLocation3();" name="otherToLocation" onfocus="this.size=3;" onblur='this.size=1;' required>
+                                    <option selected disabled hidden value="">Select an option</option>
+                                    @foreach (var location in ViewBag.LocationList)
+                                    {
+                                        <option>@location.city</option>
+                                    }
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 otherLocation3">
+                                <label class="form-label text-muted">Other To Location ...</label>
+                                <input type="text" class="form-control" name="otherToLocation">
+                            </div>
+                        </div>
+                        <div class="row g03 pt-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Requester Email ID  <font style="color: red">*</font></label>
+                                <input type="email" class="form-control" name="requesterEmailID" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted">Date of Travel <font style="color: red">*</font></label>
+                                <input type="date" class="form-control" min="@DateTime.Now" name="dateOfTravel" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted pt-3">Laptop Type <font style="color: red">*</font></label>
+                                <select class="form-select" name="laptopType" required>
+                                    <option selected disabled hidden value="">Select an option</option>
+                                    <option>Standard</option>
+                                    <option>Non-Standard</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" id="formSubmitBtn" form="offshoreForm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="offshoreModalToggle2" aria-hidden="true" aria-labelledby="offshoreModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="offshoreModalToggleLabel2">Confirm Form Submission</h5>
+                <button type="button" id="offshoreModalToggleCloseBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit this request ?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger" data-bs-target="#offshoreModalToggle" onclick="javascript: document.getElementById('offshoreModalToggleCloseBtn').click();" data-bs-dismiss="modal">No</button>
+                <button class="btn btn-success" type="submit" form="offshoreForm">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="closingModalToggle" aria-hidden="true" aria-labelledby="closingModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="closingModalToggleLabel">Create Laptop Closing Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/Laptop/AddLaptopRequest" method="post" id="closingForm">
+                    <div class="container-fluid px-3 py-3">
+                        <input type="hidden" name="requestType" value="Closing" />
+                        <div class="col-md-12">
+                            <label class="form-label text-muted">Action Taken <font style="color: red">*</font></label>
+                            <textarea class="form-control" required placeholder="Action Taken" id="floatingTextarea2" name="actionTaken" style="height: 100px"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label text-muted pt-3">Date of Closing <font style="color: red">*</font></label>
+                            <input type="date" class="form-control" min="@DateTime.Now" name="dateOfClosing" required />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" data-bs-target="#closingModalToggle2" data-bs-toggle="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="closingModalToggle2" aria-hidden="true" aria-labelledby="closingModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0D97EF; color: white;">
+                <h5 class="modal-title" id="closingModalToggleLabel2">Confirm Form Submission</h5>
+                <button type="button" id="closingModalToggleCloseBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit this request ?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger" data-bs-target="#closingModalToggle" onclick="javascript: document.getElementById('closingModalToggleCloseBtn').click();" data-bs-dismiss="modal">No</button>
+                <button class="btn btn-success" type="submit" form="closingForm">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-3 py-3">
+    <div class="card mb-3">
+        <div class="card-body px-3 py-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <legend>Laptop Request</legend>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <a data-bs-target="#breakFixModalToggle1" data-bs-toggle="modal" style="text-decoration: none;">
+                        <div class="card h-100" style="background-color: #f5f5f5">
+                            <div class="card-body">
+                                <h5 class="card-title">Break Fix</h5>
+                            </div>
+                            <img src="~/Content/Images/Group 1.svg" alt="...">
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a data-bs-target="#offshoreModalToggle" data-bs-toggle="modal" style="text-decoration: none;">
+                        <div class="card h-100" style="background-color: #f5f5f5">
+                            <div class="card-body">
+                                <h5 class="card-title">Moving To Onshore / Offshore</h5>
+                            </div>
+                            <img src="~/Content/Images/Frame 1.svg" alt="...">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script src="~/Scripts/Popper.js"></script>
+<script src="~/Scripts/LaptopRequest.js"></script>

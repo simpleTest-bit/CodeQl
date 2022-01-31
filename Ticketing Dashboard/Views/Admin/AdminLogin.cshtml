@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Admin Login";
+}
+
+<div class="alert alert-@TempData["AdminMessageType"]" role="alert">
+    @TempData["AdminMessage"]
+    <div class="float-end">
+        <button type="button" class="btn-close mt-0" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="~/Content/AdminLogin.css">
+<div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+    <div class="card card0 border-0 main-div">
+        <div class="row d-flex">
+            <div class="col-lg-6 bgcustom">
+            </div>
+            <div class="col-lg-6 logincustom">
+                <div class="card2 card border-0 px-4 py-5">
+                    <form action="/Admin/AdminLogin" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row px-3 pb-3">
+                            <h3>Admin Login</h3>
+                        </div>
+                        <div class="row px-3">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">Email ID</h6>
+                            </label>
+                            <input class="mb-4" type="email" name="emailID" placeholder="Enter valid email ID" required>
+                        </div>
+                        <div class="row px-3">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">Password</h6>
+                            </label>
+                            <input type="password" name="password" placeholder="Enter password" required>
+                        </div>
+                        <div class="row px-3">
+                            <a class="mb-0 text-sm" href="/Admin/ForgotPassword">Forgot Password</a>
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <button type="submit" class="btn btn-blue text-center">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>

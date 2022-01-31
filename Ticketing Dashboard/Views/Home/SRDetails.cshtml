@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "SR Request Details";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css">
+<link rel="stylesheet" type="text/css" href="~/Content/SRDetails.css">
+<div class="container-fluid px-5 py-5">
+    <div class="card mb-3">
+        <div class="card-body overflow-scroll">
+            <fieldset class="scheduler-border">
+                @if (ViewBag.requestType == "all")
+                {
+                    <legend>All SR Request Details</legend>
+                }
+                else if (ViewBag.requestType == "pending")
+                {
+                    <legend>Pending SR Request Details</legend>
+                }
+                else if (ViewBag.requestType == "sla")
+                {
+                    <legend>Pending SLA Exceed SR Request Details</legend>
+                }
+                else if (ViewBag.requestType == "closed")
+                {
+                    <legend>Closed SR Request Details</legend>
+                }
+                else
+                {
+                    <legend>SR Request Details</legend>
+                }
+                <br />
+                @if (ViewBag.requestType == "all")
+                {
+                    <form method="get" action="/Home/SRDetails">
+                        <input type="hidden" name="type" value="all" />
+                        <div class="row g-3 text-wrap">
+                            <div class="col-md-3">
+                                <label class="form-label">From Created Date</label>
+                                <input class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" name="fromDate" value="@ViewBag.fromDate.ToString("yyyy-MM-dd")" required />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">To Created Date</label>
+                                <input class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" name="ToDate" value="@ViewBag.toDate.ToString("yyyy-MM-dd")" required />
+                            </div>
+                        </div>
+                        <div class="col-md-3 py-3">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                }
+                <br />
+                <table class="table table-striped overflow-scroll" id="data-table">
+                    <thead>
+                        <tr>
+                            <td><strong>#</strong></td>
+                            <td><strong>Request ID</strong></td>
+                            <td><strong>Name</strong></td>
+                            <td><strong>SAP ID</strong></td>
+                            <td><strong>Project Name</strong></td>
+                            <td><strong>Position Type</strong></td>
+                            <td><strong>Experience</strong></td>
+                            <td><strong>Created Date</strong></td>
+                            <td><strong>Status</strong></td>
+                            <td><strong>Action</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;
+                            foreach (var item in ViewBag.requestDetails)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.srPk</td>
+                                    <td>@item.name</td>
+                                    @if (item.sapid == null)
+                                    {
+                                        <td>NA</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.sapid</td>
+                                    }
+                                    <td>@item.projectName</td>
+                                    <td>@item.positionType</td>
+                                    <td>@item.experience</td>
+                                    <td>@item.createdDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.status</td>
+                                    <td><a href="/Home/SRDetail/@item.srPk">View</a></td>
+                                </tr>
+                                i = i + 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <button class="btn btn-primary" onclick="javascript: window.history.back();">Back</button>
+            <button class="btn btn-success" id="export-button">Export</button>
+        </div>
+    </div>
+</div>
+<script>
+    function sendExcelRequest() {
+        const params = new URLSearchParams(window.location.search);
+        const type = params.get('type');
+        var url = "https://msftpmoservicexchange.azurewebsites.net/Home/ExportExcel?type=" + type;
+        window.location.href = url;
+
+    };
+    document.getElementById("export-button").addEventListener("click", sendExcelRequest, false);
+
+</script>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/datatables.js"></script>
+<script type="text/javascript" charset="utf8" src="~/Scripts/SRDetails.js"></script>

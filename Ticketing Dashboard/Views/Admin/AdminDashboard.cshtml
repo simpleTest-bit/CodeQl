@@ -1,0 +1,336 @@
+﻿
+@{
+    ViewBag.Title = "AdminDashboard";
+}
+<link rel="stylesheet" href="~/Content/AdminDashboard.css" />
+<div class="container-fluid px-3 py-3">
+    <div class="card mb-3">
+        <div class="card-body px-3 py-3">
+            <div class="row">
+                <div class="col-md-12" style="text-transform: uppercase;">
+                    <legend>Admin Dashboard</legend>
+                </div>
+            </div>
+            <hr />
+            @if (Session["UserRole"].ToString() == "admin")
+            {
+                <div class="row">
+                    <legend>SR Requests</legend>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=all" style="text-decoration: none;">
+                            <div class="card h-100 card-blue">
+                                <h6 class="">
+                                    Total Requests
+                                </h6>
+                                <h2 style="margin: -1px;">@ViewBag.TotalRequestCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=pending" style="text-decoration: none;">
+                            <div class="card h-100 card-orange">
+                                <h6 class="">
+                                    Pending Requests
+                                </h6>
+                                <h2>@ViewBag.PendingRequestsCount</h2>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=sla" style="text-decoration: none;">
+                            <div class="card h-100 card-red">
+                                <h6 class="">
+                                    Pending Requests (SLA exceed)
+                                </h6>
+                                <h2>@ViewBag.SLARequestsCount</h2>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=closed" style="text-decoration: none;">
+                            <div class="card h-100 card-green">
+                                <h6 class="">
+                                    Closed Requests
+                                </h6>
+                                <h2>@ViewBag.ClosedRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <legend>Laptop Requests</legend>
+                    <div class="col-md-3">
+                        <a href="/Laptop/LaptopDetails?type=all" style="text-decoration: none;">
+                            <div class="card h-100 card-blue">
+                                <h6 class="">
+                                    Total Requests
+                                </h6>
+                                <h2>@ViewBag.TotalLaptopRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Laptop/LaptopDetails?type=pending" style="text-decoration: none;">
+                            <div class="card h-100 card-orange">
+                                <h6 class="">
+                                    Pending Requests
+                                </h6>
+                                <h2>@ViewBag.PendingLaptopRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row ">
+                            <div class="card card-red top-sla-card">
+                                <h6>Pending Requests (SLA Exceed)</h6>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6 align-middle">
+                                <a href="/Laptop/LaptopDetails?type=sla-breakfix" style="text-decoration: none;">
+                                    <div class="card h-100 card-red bottom-sla-card">
+                                        <h6 class="">
+                                            Break Fix
+                                        </h6>
+                                        <h2>@ViewBag.SLABreakFixCount</h2>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-6 align-middle h-100 ">
+                                <a href="/Laptop/LaptopDetails?type=sla-employeemovingonshore" style="text-decoration: none;">
+                                    <div class="card h-100 card-red bottom-sla-card">
+                                        <h6 class="">
+                                            Onshore
+                                        </h6>
+                                        <h2>@ViewBag.SLAOnshoreCount</h2>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Laptop/LaptopDetails?type=closed" style="text-decoration: none;">
+                            <div class="card h-100 card-green">
+                                <h6 class="">
+                                    Closed Requests
+                                </h6>
+                                <h2>@ViewBag.ClosedLaptopRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <legend>Onboarding Requests</legend>
+                    <div class="col-md-3">
+                        <a href="/Onboarding/OnboardingDetails?type=all" style="text-decoration: none;">
+                            <div class="card h-100 card-blue">
+                                <h6 class="">
+                                    Total Requests
+                                </h6>
+                                <h2 style="margin: -1px;">@ViewBag.TotalOnboardingRequests</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Onboarding/OnboardingDetails?type=upcoming" style="text-decoration: none;">
+                            <div class="card h-100 card-orange">
+                                <h6 class="">
+                                    Upcoming (Joining 7 days)
+                                </h6>
+                                <h2>@ViewBag.UpcomingOnboardingRequests</h2>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Onboarding/OnboardingDetails?type=RENEGE" style="text-decoration: none;">
+                            <div class="card h-100 card-red">
+                                <h6 class="">
+                                    RENEGE Requests
+                                </h6>
+                                <h2>@ViewBag.RENEGEOnboardingRequests</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Onboarding/OnboardingDetails?type=filfilled" style="text-decoration: none;">
+                            <div class="card h-100 card-green">
+                                <h6 class="">
+                                    Fulfilled Requests
+                                </h6>
+                                <h2>@ViewBag.FulfilledOnboardingRequests</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+            else if (Session["UserRole"].ToString() == "sradmin")
+            {
+                <div class="row">
+                    <legend>SR Requests</legend>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=all" style="text-decoration: none;">
+                            <div class="card h-100 card-blue">
+                                <h6 class="">
+                                    Total Requests
+                                </h6>
+                                <h2 style="margin: -1px;">@ViewBag.TotalRequestCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=pending" style="text-decoration: none;">
+                            <div class="card h-100 card-orange">
+                                <h6 class="">
+                                    Pending Requests
+                                </h6>
+                                <h2>@ViewBag.PendingRequestsCount</h2>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=sla" style="text-decoration: none;">
+                            <div class="card h-100 card-red">
+                                <h6 class="">
+                                    Pending Requests (SLA exceed)
+                                </h6>
+                                <h2>@ViewBag.SLARequestsCount</h2>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Home/SRDetails?type=closed" style="text-decoration: none;">
+                            <div class="card h-100 card-green">
+                                <h6 class="">
+                                    Closed Requests
+                                </h6>
+                                <h2>@ViewBag.ClosedRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <hr />
+            }
+            else if (Session["UserRole"].ToString() == "laptopadmin")
+            {
+                <div class="row">
+                    <legend>Laptop Requests</legend>
+                    <div class="col-md-3">
+                        <a href="/Laptop/LaptopDetails?type=all" style="text-decoration: none;">
+                            <div class="card h-100 card-blue">
+                                <h6 class="">
+                                    Total Requests
+                                </h6>
+                                <h2>@ViewBag.TotalLaptopRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Laptop/LaptopDetails?type=pending" style="text-decoration: none;">
+                            <div class="card h-100 card-orange">
+                                <h6 class="">
+                                    Pending Requests
+                                </h6>
+                                <h2>@ViewBag.PendingLaptopRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row ">
+                            <div class="card card-red top-sla-card">
+                                <h6>Pending Requests (SLA Exceed)</h6>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6 align-middle">
+                                <a href="/Laptop/LaptopDetails?type=sla-breakfix" style="text-decoration: none;">
+                                    <div class="card h-100 card-red bottom-sla-card">
+                                        <h6 class="">
+                                            Break Fix
+                                        </h6>
+                                        <h2>@ViewBag.SLABreakFixCount</h2>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-6 align-middle h-100 ">
+                                <a href="/Laptop/LaptopDetails?type=sla-employeemovingonshore" style="text-decoration: none;">
+                                    <div class="card h-100 card-red bottom-sla-card">
+                                        <h6 class="">
+                                            Onshore
+                                        </h6>
+                                        <h2>@ViewBag.SLAOnshoreCount</h2>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Laptop/LaptopDetails?type=closed" style="text-decoration: none;">
+                            <div class="card h-100 card-green">
+                                <h6 class="">
+                                    Closed Requests
+                                </h6>
+                                <h2>@ViewBag.ClosedLaptopRequestsCount</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+            else if (Session["UserRole"].ToString() == "onboardingadmin")
+            {
+            <div class="row">
+                <legend>Onboarding Requests</legend>
+                <div class="col-md-3">
+                    <a href="/Onboarding/OnboardingDetails?type=all" style="text-decoration: none;">
+                        <div class="card h-100 card-blue">
+                            <h6 class="">
+                                Total Requests
+                            </h6>
+                            <h2 style="margin: -1px;">@ViewBag.TotalOnboardingRequests</h2>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/Onboarding/OnboardingDetails?type=upcoming" style="text-decoration: none;">
+                        <div class="card h-100 card-orange">
+                            <h6 class="">
+                                Upcoming Requests
+                            </h6>
+                            <h2>@ViewBag.UpcomingOnboardingRequests</h2>
+
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/Onboarding/OnboardingDetails?type=fulfilled" style="text-decoration: none;">
+                        <div class="card h-100 card-red">
+                            <h6 class="">
+                                RENEGE Requests
+                            </h6>
+                            <h2>@ViewBag.RENEGEOnboardingRequests</h2>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/Onboarding/OnboardingDetails?type=RENEGE" style="text-decoration: none;">
+                        <div class="card h-100 card-green">
+                            <h6 class="">
+                                Fulfilled Requests
+                            </h6>
+                            <h2>@ViewBag.FulfilledOnboardingRequests</h2>
+                        </div>
+                    </a>
+                </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>

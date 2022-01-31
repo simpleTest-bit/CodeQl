@@ -41,7 +41,7 @@ steps:
    pwd 
    & ./codeql-runner-win.exe init --github-url https://github.com --repository simpleTest-bit/CodeQl --github-auth $(GithubToken) --languages csharp 
 
-   cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression 
+   cat $(Build.SourcesDirectory)\codeql-runner\codeql-env.sh | Invoke-Expression 
    dotnet restore 
    dotnet build 
 

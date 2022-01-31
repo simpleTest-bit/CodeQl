@@ -37,7 +37,7 @@ steps:
    $ProgressPreference = 'SilentlyContinue' 
    invoke-webRequest -uri https://github.com/github/codeql-action/releases/latest/download/codeql-runner-win.exe -OutFile $(Build.SourcesDirectory)\codeql-runner-win.exe
    Write-Host "Code QL analysis for windows downloaded, now we init it" 
-   cd $(Build.SourcesDirectory)\src 
+   cd $(Build.SourcesDirectory)
    pwd 
    & ./codeql-runner-win.exe init --github-url https://github.com --repository simpleTest-bit/CodeQl --github-auth $(GithubToken) --languages csharp 
 

@@ -42,7 +42,7 @@ steps:
    & ./codeql-runner-win.exe init --github-url https://github.com --repository simpleTest-bit/CodeQl --github-auth $(GithubToken) --languages csharp 
 
    cat $(Build.SourcesDirectory)\codeql-runner\codeql-env.sh | Invoke-Expression 
-   cd ..
+
    dotnet build 
 
    Write-Host "Analyzing with CodeQL" 
